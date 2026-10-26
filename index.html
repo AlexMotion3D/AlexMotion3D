@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlexMotin3D — 3D Product Animation</title>
+<meta name="description" content="AlexMotin3D — 3D product animation and rendering portfolio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#ffffff;
+    --bg:#fbfaf8;
+    --ink:#16130f;
+    --muted:#7b736a;
+    --orange:#ff9b5e;
+    --orange-soft:#ffe6d5;
+    --orange-deep:#f27a2e;
+    --radius:22px;
+    --ease:cubic-bezier(.22,.8,.26,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Manrope',system-ui,sans-serif;background:var(--white);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- Header ---------- */
+  header{
+    position:fixed;inset:0 0 auto 0;z-index:50;
+    display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;
+    padding:30px clamp(20px,3vw,48px) 20px;
+    transition:padding .5s var(--ease),background .5s var(--ease),box-shadow .5s var(--ease),gap .5s var(--ease);
+  }
+  .brand{
+    font-weight:800;letter-spacing:-.03em;color:#fff;
+    font-size:clamp(36px,4vw,64px);line-height:1;justify-self:start;
+    text-shadow:0 4px 30px rgba(0,0,0,.35);
+    transition:font-size .5s var(--ease),color .5s var(--ease),text-shadow .5s;
+  }
+  .brand span{color:var(--orange)}
+  nav{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;grid-column:2}
+  nav a{
+    padding:18px 38px;border-radius:999px;font-weight:600;font-size:19px;
+    color:#fff;background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.4);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    transition:background .35s var(--ease),color .35s,border-color .35s,transform .35s var(--ease);
+  }
+  nav a:hover{background:var(--orange);border-color:var(--orange);color:#fff;transform:translateY(-2px)}
+  header.scrolled{
+    gap:16px;padding:14px clamp(20px,3vw,48px) 14px;background:rgba(255,255,255,.88);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    box-shadow:0 1px 0 rgba(22,19,15,.06);
+  }
+  header.scrolled .brand{font-size:36px;color:var(--ink);text-shadow:none}
+  header.scrolled nav a{padding:12px 26px;font-size:16px;color:var(--ink);background:var(--bg);border-color:rgba(22,19,15,.08)}
+  header.scrolled nav a:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+
+  /* ---------- Hero ---------- */
+  .hero{position:relative;height:100vh;min-height:560px;overflow:hidden;background:linear-gradient(135deg,#2a2018,#6b4a32)}
+  .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.38),rgba(0,0,0,.18) 45%,rgba(0,0,0,.5))}
+  .hero-text{
+    position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 24px;
+  }
+  .hero-text h1{
+    color:#fff;font-weight:700;letter-spacing:-.035em;line-height:1.02;
+    font-size:clamp(40px,8vw,112px);max-width:14ch;
+    text-shadow:0 6px 50px rgba(0,0,0,.4);
+    animation:rise 1.4s var(--ease) both .2s;
+  }
+  .hero-text h1 em{font-style:normal;color:var(--orange)}
+  .scroll-cue{position:absolute;bottom:30px;left:50%;translate:-50% 0;z-index:2;width:26px;height:44px;border:2px solid rgba(255,255,255,.7);border-radius:20px}
+  .scroll-cue::after{content:"";position:absolute;top:8px;left:50%;width:4px;height:8px;margin-left:-2px;border-radius:4px;background:#fff;animation:cue 1.8s infinite}
+  @keyframes cue{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(14px)}}
+  @keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+
+  /* ---------- Generic section ---------- */
+  .eyebrow{font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--orange-deep)}
+  h2{font-size:clamp(34px,5vw,64px);font-weight:800;letter-spacing:-.03em;line-height:1.05}
+
+  /* ---------- About ---------- */
+  #about{min-height:100vh;display:flex;align-items:center;padding:140px 6vw 100px;background:var(--white)}
+  .about-grid{width:100%;max-width:1300px;margin:0 auto;display:grid;grid-template-columns:minmax(260px,5fr) 6fr;gap:clamp(32px,6vw,90px);align-items:center}
+  .photo{
+    position:relative;aspect-ratio:4/5;border-radius:34px;overflow:hidden;
+    background:linear-gradient(160deg,var(--orange-soft),#fff3ea);
+    box-shadow:0 30px 70px -30px rgba(242,122,46,.45);
+  }
+  .photo::before{content:"Your photo\Aabout.jpg";white-space:pre;position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--orange-deep);font-weight:600;font-size:14px;opacity:.8}
+  .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .about-copy h2{margin:14px 0 26px}
+  .about-copy p{font-size:clamp(16px,1.35vw,19px);line-height:1.75;color:#4a443d;margin-bottom:18px;max-width:58ch}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .chips span{padding:10px 18px;border-radius:999px;background:var(--orange-soft);color:var(--orange-deep);font-weight:600;font-size:14px}
+
+  /* ---------- Works ---------- */
+  #works{background:var(--bg)}
+  .works-intro{min-height:46vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-align:center;padding:150px 6vw 40px}
+  .works-intro h2{margin-top:14px}
+  .works-intro p{margin-top:16px;color:var(--muted);font-size:18px;max-width:46ch;line-height:1.6}
+
+  .project{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:90px 4vw 70px;gap:34px;scroll-margin-top:60px}
+  .project:nth-of-type(even){background:var(--white)}
+  .project-head{text-align:center}
+  .project-head .num{font-size:13px;font-weight:700;letter-spacing:.2em;color:var(--orange-deep)}
+  .project-head h3{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-.03em;margin-top:6px}
+
+  /* pairs: Solid View -> Render */
+  .stack{display:flex;flex-direction:column;align-items:center;gap:30px;width:100%}
+  .stack.row{flex-direction:row;justify-content:center;align-items:flex-start;gap:clamp(30px,5vw,80px)}
+  .pair{display:flex;align-items:center;justify-content:center;gap:clamp(10px,1.8vw,28px)}
+  .pair-title{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:14px}
+  .pair-wrap{display:flex;flex-direction:column;align-items:center}
+  .arrow{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--orange-soft);color:var(--orange-deep);margin-top:-26px}
+  .arrow svg{width:22px;height:22px}
+
+  .tile-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+  .tile-wrap .cap{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.04em}
+  .tile{
+    position:relative;border-radius:var(--radius);overflow:hidden;background:linear-gradient(150deg,#f3ece5,#ece1d6);
+    box-shadow:0 18px 40px -22px rgba(60,35,15,.35);
+    transition:transform .5s var(--ease),box-shadow .5s var(--ease);
+  }
+  .tile.land{aspect-ratio:16/9;width:min(44vw,720px)}
+  .tile.port{aspect-ratio:9/16;width:min(26vw,400px)}
+  .tile::before{content:attr(data-file);position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:10px;color:#a8977f;font-size:12px;font-weight:600}
+  .tile video,.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:filter .5s var(--ease)}
+  /* hover: NO zoom — soft orange glow frame + lift + light sweep */
+  .tile::after{
+    content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    box-shadow:inset 0 0 0 0 var(--orange);
+    background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.28) 50%,transparent 65%) -150% 0/250% 100% no-repeat;
+    transition:box-shadow .45s var(--ease),background-position .9s var(--ease);
+  }
+  .tile:hover{transform:translateY(-6px);box-shadow:0 30px 60px -24px rgba(242,122,46,.55)}
+  .tile:hover::after{box-shadow:inset 0 0 0 3px var(--orange);background-position:150% 0}
+  .tile:hover video,.tile:hover img{filter:brightness(1.05) saturate(1.1)}
+
+  /* Spreads: two projects side by side on one screen */
+  .spread{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,70px);align-items:start;padding:110px 4vw 80px;scroll-margin-top:60px;background:var(--bg)}
+  .spread.land{background:var(--white)}
+  .col{display:flex;flex-direction:column;align-items:center;gap:34px;scroll-margin-top:90px;min-width:0}
+  .spread .tile.port{width:min(19vw,480px)}
+  .spread .tile.land{width:min(42vw,860px)}
+  .spread.land .pair{flex-direction:column;gap:22px}
+  .spread.land .arrow{margin-top:0}
+  .spread.land .arrow svg{transform:rotate(90deg)}
+
+  /* Landscape spread: rows line up across both projects, so a lone video
+     (Insta360) sits vertically centered between Estee Lauder's Solid View and Render videos */
+  @media (min-width:1101px){
+    .spread.land{grid-template-rows:auto auto auto;row-gap:0}
+    .spread.land .col{grid-row:span 3;display:grid;grid-template-rows:subgrid;row-gap:34px;align-self:stretch;justify-items:center}
+    .spread.land .stack{display:contents}
+    .spread.land .pair-wrap.solo{align-self:center}
+  }
+
+  /* Dior full page */
+  .project.dior .tile.land{width:min(88vw,1280px);border-radius:28px}
+
+  /* ---------- Footer / Contact ---------- */
+  footer{background:var(--ink);color:#fff;padding:110px 6vw 40px;text-align:center}
+  footer .eyebrow{color:var(--orange)}
+  footer h2{margin:14px 0 18px}
+  footer p.lead{color:#bdb4a9;font-size:18px;margin-bottom:40px}
+  .contact-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+  .contact-links a{
+    display:flex;flex-direction:column;gap:4px;padding:22px 34px;border-radius:22px;min-width:260px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+    transition:background .35s var(--ease),border-color .35s,transform .35s var(--ease);
+  }
+  .contact-links a small{color:#a79d90;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+  .contact-links a span{font-size:20px;font-weight:600}
+  .contact-links a:hover{background:var(--orange);border-color:var(--orange);transform:translateY(-4px)}
+  .contact-links a:hover small{color:#fff}
+
+  /* contact card + copy button */
+  .contact-item{display:flex;align-items:stretch;gap:10px}
+  .contact-item a{flex:1;text-align:left}
+  .copy-btn{
+    all:unset;box-sizing:border-box;cursor:pointer;position:relative;flex:none;width:72px;
+    display:grid;place-items:center;border-radius:22px;color:#fff;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+    transition:background .35s var(--ease),border-color .35s,transform .35s var(--ease);
+  }
+  .copy-btn:hover{background:var(--orange);border-color:var(--orange);transform:translateY(-4px)}
+  .copy-btn:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+  .copy-btn svg{width:26px;height:26px;grid-area:1/1}
+  .copy-btn .i-check{display:none}
+  .copy-btn.copied{background:#2f9e5b;border-color:#2f9e5b}
+  .copy-btn.copied .i-copy{display:none}
+  .copy-btn.copied .i-check{display:block}
+  .copy-btn .tip{
+    position:absolute;bottom:calc(100% + 10px);left:50%;transform:translate(-50%,6px);
+    background:#fff;color:var(--ink);font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px;
+    white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .3s var(--ease),transform .3s var(--ease);
+  }
+  .copy-btn.copied .tip{opacity:1;transform:translate(-50%,0)}
+
+  .copy{margin-top:80px;color:#7f766b;font-size:13px}
+
+  /* FAQ */
+  .faq{max-width:980px;margin:120px auto 0;text-align:left}
+  .faq-head{text-align:center;margin-bottom:40px}
+  .faq-head h2{margin:14px 0 0;font-size:clamp(28px,4vw,48px)}
+  .faq-item{border-bottom:1px solid rgba(255,255,255,.14)}
+  .faq-q{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:30px 4px;font-size:clamp(21px,2.5vw,28px);font-weight:600;line-height:1.3;transition:color .3s}
+  .faq-q:hover{color:var(--orange)}
+  .faq-q:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .plus{flex:none;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.08);position:relative;transition:background .35s var(--ease)}
+  .plus::before,.plus::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:2px;margin:-1px 0 0 -7px;background:#fff;border-radius:2px;transition:transform .45s var(--ease)}
+  .plus::after{transform:rotate(90deg)}
+  .faq-item.open .plus{background:var(--orange)}
+  .faq-item.open .plus::after{transform:rotate(0)}
+  .faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+  .faq-item.open .faq-a{grid-template-rows:1fr}
+  .faq-a>div{overflow:hidden;min-height:0}
+  .faq-a p{padding:0 4px 32px;color:#d6cdc1;font-size:clamp(18px,1.9vw,22px);line-height:1.75;max-width:70ch}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:1100px){
+    header{grid-template-columns:1fr;gap:14px;justify-items:start}
+    nav{grid-column:1;justify-self:center}
+    .tile.port{width:min(34vw,380px)}
+    .spread{grid-template-columns:1fr;gap:90px}
+    .spread .tile.port{width:min(34vw,380px)}
+    .spread .tile.land{width:min(80vw,720px)}
+  }
+  @media (max-width:760px){
+    header{padding:16px 14px 12px;gap:12px}
+    .brand{font-size:40px}
+    nav{gap:10px}
+    nav a{padding:13px 22px;font-size:16px}
+    header.scrolled .brand{font-size:30px}
+    header.scrolled nav a{padding:10px 18px;font-size:15px}
+    .about-grid{grid-template-columns:1fr}
+    .photo{max-width:420px;margin:0 auto;width:100%}
+    .tile.land,.spread .tile.land{width:92vw}
+    .tile.port,.spread .tile.port{width:min(82vw,430px)}
+    .spread .pair{flex-direction:column}
+    .spread .arrow svg{transform:rotate(90deg)}
+    .pair{flex-direction:column}
+    .arrow svg{transform:rotate(90deg)}
+    .arrow{margin-top:0}
+    .contact-item{width:100%;max-width:480px}
+    .contact-links a{min-width:0}
+    .contact-links a span{font-size:17px;word-break:break-word}
+    .copy-btn{width:60px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none;transition:none}
+    .hero-text h1{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<header id="top">
+  <a class="brand" href="#top">Alex<span>Motin</span>3D</a>
+  <nav>
+    <a href="#about">About Me</a>
+    <a href="#works">My Works</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <video autoplay muted loop playsinline preload="auto">
+    <source src="media/hero.mp4" type="video/mp4">
+  </video>
+  <div class="hero-text"><h1>The Best <em>AD</em> Only For You</h1></div>
+  <div class="scroll-cue"></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="photo reveal"><img src="media/my%20photo/my-photo.png" alt="Alex — 3D product animator" onerror="this.remove()"></div>
+    <div class="about-copy reveal">
+      <div class="eyebrow">About Me</div>
+      <h2>I turn products into motion that people remember.</h2>
+      <p>Hi, I'm Alex — a 3D product animation artist. I create sleek, cinematic renders and animations for beauty, tech and lifestyle brands, from the first sketch of an idea to the final polished frame.</p>
+      <p>Every project starts with the product itself: its shape, its materials, the way light touches it. I build clean, premium visuals that make products feel desirable and ready for ads, social media and launches.</p>
+      <p>I've had the pleasure of working on projects for brands such as Estée Lauder, Insta360 and Dior, as well as my own concept work.</p>
+      <div class="chips"><span>3D Product Animation</span><span>Rendering</span><span>Advertising Visuals</span><span>Motion Design</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section id="works">
+  <div class="works-intro reveal">
+    <div class="eyebrow">Portfolio</div>
+    <h2>My Works</h2>
+    <p>From clay to final render.</p>
+  </div>
+  <div id="projects"></div>
+</section>
+
+<!-- CONTACT -->
+<footer id="contact">
+  <div class="reveal">
+    <div class="eyebrow">Contact</div>
+    <h2>Contact Information</h2>
+    <p class="lead">Have a product that deserves to move? Let's talk.</p>
+    <div class="contact-links">
+      <div class="contact-item">
+        <a href="mailto:sasha.talianskiy@gmail.com"><small>Email</small><span>sasha.talianskiy@gmail.com</span></a>
+        <button class="copy-btn" type="button" data-copy="sasha.talianskiy@gmail.com" aria-label="Copy email address">
+          <span class="tip">Copied!</span>
+          <svg class="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></svg>
+          <svg class="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+        </button>
+      </div>
+      <div class="contact-item">
+        <a href="https://t.me/Sasha228337123" target="_blank" rel="noopener"><small>Telegram</small><span>@Sasha228337123</span></a>
+        <button class="copy-btn" type="button" data-copy="https://t.me/Sasha228337123" aria-label="Copy Telegram link">
+          <span class="tip">Copied!</span>
+          <svg class="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></svg>
+          <svg class="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+        </button>
+      </div>
+      <!-- PHONE: replace the number in all three places below (tel link, text, data-copy) -->
+      <div class="contact-item">
+        <a href="tel:+380970726080"><small>Phone</small><span>+380970726080</span></a>
+        <button class="copy-btn" type="button" data-copy="+380970726080" aria-label="Copy phone number">
+          <span class="tip">Copied!</span>
+          <svg class="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></svg>
+          <svg class="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="faq reveal">
+    <div class="faq-head">
+      <div class="eyebrow">FAQ</div>
+      <h2>Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">How much does a Product Animation cost?<span class="plus"></span></button>
+      <div class="faq-a"><div><p>Depending on your wants and needs it can range anywhere from $300 to $10,000. I recommend sending an emailw  with your request and I'll give you a quote within 24 hours.</p></div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">How long will it take to receive my final product?<span class="plus"></span></button>
+      <div class="faq-a"><div><p>It depends on the length of the product. It can be anywhere from 24 hours to 14 days depending on the size of the project.</p></div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">Do I get revisions?<span class="plus"></span></button>
+      <div class="faq-a"><div><p>You get one revision for free. 3D is very intensive. All revisions after that will charge an hourly rate.</p></div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">How can I get started?<span class="plus"></span></button>
+      <div class="faq-a"><div><p>Either send an email or Telegram message and receive an answer within 24 hours.</p></div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">I need the text to be in a different language than English. Is this possible?<span class="plus"></span></button>
+      <div class="faq-a"><div><p>Yes, absolutely! Just write me and we can handle everything in the language you prefer (within 24 hours to get an answer)</p></div></div>
+    </div>
+  </div>
+  <div class="copy">© <span id="yr"></span> AlexMotin3D. All rights reserved.</div>
+</footer>
+
+<script>
+/* ------------------------------------------------------------------
+   MEDIA CONFIG — files are read from the "media" folder next to this index.html:
+   media/anim/render/anim-<name>.mp4        media/anim/solid/anim-solid-<name>.mp4
+   media/img/render/img-<name>.png          media/img/solid/img-solid-<name>.png
+   about photo: media/my photo/my-photo.png     hero: media/hero.mp4
+------------------------------------------------------------------- */
+const projects = [
+  { name:"Alex Motion", slug:"alex-motion", format:"port" },   // 1080x1920
+  { name:"Estee Lauder", slug:"estee-lauder", format:"land" }, // 1920x1080
+  { name:"RVB Lip", slug:"rvb-lip", format:"port" },           // 1080x1920
+  { name:"Insta360", slug:"insta360", format:"land", noSolidVideo:true } // 1920x1080 — render video only, no Solid View video
+];
+// Photos: Alex Motion + RVB Lip are 1080x1920, Estee Lauder + Insta360 + Dior are 1920x1080.
+
+const arrowSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+/* Maps a project to your actual file names / folders */
+function mediaPath(kind, variant, slug){
+  if(kind === 'video'){
+    return variant === 'solid' ? `media/anim/solid/anim-solid-${slug}.mp4` : `media/anim/render/anim-${slug}.mp4`;
+  }
+  return variant === 'solid' ? `media/img/solid/img-solid-${slug}.png` : `media/img/render/img-${slug}.png`;
+}
+
+function tile(kind, src, fmt, caption){
+  const media = kind === 'video'
+    ? `<video muted loop playsinline preload="metadata" data-src="${src}"></video>`
+    : `<img loading="lazy" src="${src}" alt="${caption}" onerror="this.remove()">`;
+  return `<div class="tile-wrap"><div class="tile ${fmt}" data-file="${src}">${media}</div><div class="cap">${caption}</div></div>`;
+}
+function pair(title, kind, base, ext, fmt, withSolid = true){
+  if(!withSolid){
+    return `<div class="pair-wrap solo"><div class="pair-title">${title}</div><div class="pair ${fmt}-pair">
+    ${tile(kind, mediaPath(kind, 'render', base), fmt, 'Render')}
+  </div></div>`;
+  }
+  return `<div class="pair-wrap"><div class="pair-title">${title}</div><div class="pair ${fmt}-pair">
+    ${tile(kind, mediaPath(kind, 'solid', base), fmt, 'Solid View')}
+    <div class="arrow">${arrowSVG}</div>
+    ${tile(kind, mediaPath(kind, 'render', base), fmt, 'Render')}
+  </div></div>`;
+}
+
+const root = document.getElementById('projects');
+// Two spreads: projects 1 + 3 side by side, then projects 2 + 4 side by side.
+[[0,2],[1,3]].forEach(ids => {
+  const fmt = projects[ids[0]].format;
+  const cols = ids.map(i => {
+    const p = projects[i];
+    return `
+    <div class="col" id="${p.slug}">
+      <div class="project-head"><h3>${p.name}</h3></div>
+      <div class="stack">
+        ${pair('Animation', 'video', p.slug, 'mp4', p.format, !p.noSolidVideo)}
+        ${pair('Photo', 'image', p.slug, 'jpg', p.format)}
+      </div>
+    </div>`;
+  }).join('');
+  root.insertAdjacentHTML('beforeend', `<section class="spread ${fmt} reveal">${cols}</section>`);
+});
+root.insertAdjacentHTML('beforeend', `
+  <section class="project dior reveal" id="dior">
+    <div class="project-head"><h3>Dior</h3></div>
+    ${tile('image', 'media/img/render/img-dior.png', 'land', 'Render')}
+  </section>`);
+
+/* header state */
+const header = document.getElementById('top');
+const onScroll = () => header.classList.toggle('scrolled', window.scrollY > window.innerHeight * 0.6);
+addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+/* reveal on scroll */
+const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }), {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* play videos only while visible (keeps the page light) */
+const vio = new IntersectionObserver(es => es.forEach(e => {
+  const v = e.target;
+  if(e.isIntersecting){
+    if(!v.src && v.dataset.src){ v.src = v.dataset.src; v.onerror = () => v.remove(); }
+    v.play().catch(()=>{});
+  } else { v.pause(); }
+}), {threshold:.25});
+document.querySelectorAll('video[data-src]').forEach(v => vio.observe(v));
+
+/* FAQ accordion */
+document.querySelectorAll('.faq-q').forEach(btn => btn.addEventListener('click', () => {
+  const item = btn.parentElement;
+  const open = !item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => { i.classList.remove('open'); i.querySelector('.faq-q').setAttribute('aria-expanded','false'); });
+  if(open){ item.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
+}));
+
+/* Copy buttons (email, Telegram link, phone) */
+async function copyText(text){
+  try{
+    if(navigator.clipboard && window.isSecureContext){ await navigator.clipboard.writeText(text); return true; }
+  }catch(e){}
+  try{ // fallback for file:// or older browsers
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly',''); ta.style.cssText = 'position:fixed;top:-100px;opacity:0';
+    document.body.appendChild(ta); ta.select();
+    const ok = document.execCommand('copy');
+    ta.remove();
+    return ok;
+  }catch(e){ return false; }
+}
+document.querySelectorAll('.copy-btn').forEach(btn => btn.addEventListener('click', async () => {
+  const tip = btn.querySelector('.tip');
+  const ok = await copyText(btn.dataset.copy);
+  tip.textContent = ok ? 'Copied!' : 'Press Ctrl+C';
+  btn.classList.add('copied');
+  clearTimeout(btn._t);
+  btn._t = setTimeout(() => btn.classList.remove('copied'), 1800);
+}));
+
+document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
