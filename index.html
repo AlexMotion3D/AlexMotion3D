@@ -1,16 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="82acc4c9-2ed9-45d4-87ca-14e4ccbc4a88" type="text/javascript" async></script>
-      <!-- Google tag (gtag.js) -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-VYEB23C3SN"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-       gtag('config', 'G-VYEB23C3SN');
-    </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AlexMotin3D — 3D Product Animation</title>
@@ -95,12 +85,14 @@
   #about{min-height:100vh;display:flex;align-items:center;padding:140px 6vw 100px;background:var(--white)}
   .about-grid{width:100%;max-width:1300px;margin:0 auto;display:grid;grid-template-columns:minmax(260px,5fr) 6fr;gap:clamp(32px,6vw,90px);align-items:center}
   .photo{
-    position:relative;aspect-ratio:4/5;border-radius:34px;overflow:hidden;
+    position:relative;min-height:320px;border-radius:34px;overflow:hidden;
     background:linear-gradient(160deg,var(--orange-soft),#fff3ea);
-    box-shadow:0 30px 70px -30px rgba(242,122,46,.45);
+    /* glow only at the bottom: strong negative spread hides it on the sides and top */
+    box-shadow:0 40px 46px -36px rgba(242,122,46,.6);
   }
   .photo::before{content:"Your photo\Aabout.jpg";white-space:pre;position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--orange-deep);font-weight:600;font-size:14px;opacity:.8}
-  .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  /* the frame now follows the photo's own proportions, so nothing is cropped (hair included) */
+  .photo img{position:relative;display:block;width:100%;height:auto}
   .about-copy h2{margin:14px 0 26px}
   .about-copy p{font-size:clamp(16px,1.35vw,19px);line-height:1.75;color:#4a443d;margin-bottom:18px;max-width:58ch}
   .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
