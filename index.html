@@ -83,9 +83,9 @@
 
   /* ---------- About ---------- */
   #about{min-height:100vh;display:flex;align-items:center;padding:140px 6vw 100px;background:var(--white)}
-  .about-grid{width:100%;max-width:1300px;margin:0 auto;display:grid;grid-template-columns:minmax(260px,5fr) 6fr;gap:clamp(32px,6vw,90px);align-items:center}
+  .about-grid{width:100%;max-width:1300px;margin:0 auto;display:grid;grid-template-columns:minmax(260px,5fr) 6fr;gap:clamp(32px,6vw,90px);align-items:start}
   .photo{
-    position:relative;min-height:320px;border-radius:34px;overflow:hidden;
+    position:sticky;top:130px;min-height:320px;border-radius:34px;overflow:hidden;
     background:linear-gradient(160deg,var(--orange-soft),#fff3ea);
     /* glow only at the bottom: strong negative spread hides it on the sides and top */
     box-shadow:0 40px 46px -36px rgba(242,122,46,.6);
@@ -95,6 +95,15 @@
   .photo img{position:relative;display:block;width:100%;height:auto}
   .about-copy h2{margin:14px 0 26px}
   .about-copy p{font-size:clamp(16px,1.35vw,19px);line-height:1.75;color:#4a443d;margin-bottom:18px;max-width:58ch}
+  .about-copy .lead-in{font-size:clamp(21px,2.1vw,29px);font-weight:700;letter-spacing:-.02em;line-height:1.35;color:var(--ink);max-width:36ch;margin:14px 0 6px}
+  .about-h{font-size:clamp(20px,1.7vw,24px);font-weight:800;letter-spacing:-.01em;margin:34px 0 16px;display:flex;align-items:center;gap:12px}
+  .about-h::before{content:"";flex:none;width:28px;height:3px;border-radius:3px;background:var(--orange)}
+  .about-list{list-style:none;max-width:62ch}
+  .about-list li{position:relative;padding-left:26px;margin-bottom:12px;font-size:clamp(16px,1.35vw,19px);line-height:1.65;color:#4a443d}
+  .about-list li::before{content:"";position:absolute;left:0;top:.62em;width:9px;height:9px;border-radius:50%;background:var(--orange)}
+  .about-list li strong{color:var(--ink);font-weight:700}
+  .about-note{margin-top:30px}
+  .about-copy .about-cta{color:var(--ink);font-weight:700;font-size:clamp(17px,1.5vw,21px);margin-top:6px}
   .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
   .chips span{padding:10px 18px;border-radius:999px;background:var(--orange-soft);color:var(--orange-deep);font-weight:600;font-size:14px}
 
@@ -243,7 +252,7 @@
     header.scrolled .brand{font-size:30px}
     header.scrolled nav a{padding:10px 18px;font-size:15px}
     .about-grid{grid-template-columns:1fr}
-    .photo{max-width:420px;margin:0 auto;width:100%}
+    .photo{position:relative;top:auto;max-width:420px;margin:0 auto;width:100%}
     .tile.land,.spread .tile.land{width:92vw}
     .tile.port,.spread .tile.port{width:min(82vw,430px)}
     .spread .pair{flex-direction:column}
@@ -289,11 +298,27 @@
     <div class="photo reveal"><img src="media/my%20photo/my-photo.png" alt="Alex — 3D product animator" decoding="async" onerror="this.remove()"></div>
     <div class="about-copy reveal">
       <div class="eyebrow">About Me</div>
-      <h2>I turn products into motion that people remember.</h2>
-      <p>Hi, I'm Alex — a 3D product animation artist. I create sleek, cinematic renders and animations for beauty, tech and lifestyle brands, from the first sketch of an idea to the final polished frame.</p>
-      <p>Every project starts with the product itself: its shape, its materials, the way light touches it. I build clean, premium visuals that make products feel desirable and ready for ads, social media and launches.</p>
-      <p>I've had the pleasure of working on projects for brands such as Estée Lauder, Insta360 and Dior, as well as my own concept work.</p>
-      <div class="chips"><span>3D Product Animation</span><span>Rendering</span><span>Advertising Visuals</span><span>Motion Design</span></div>
+      <p class="lead-in">Hi, I’m Sasha — a 3D product animator based in Kyiv, Ukraine. I create hyper-realistic 3D product animations for global brands, commercial advertising, and e-commerce.</p>
+
+      <h3 class="about-h">Why Work With Me?</h3>
+      <ul class="about-list">
+        <li><strong>Premium Visual Quality:</strong> Photorealistic 3D animations engineered to elevate your product above the competition.</li>
+        <li><strong>Bespoke Creativity:</strong> Tailored concepts, custom 3D modeling, cinema-grade lighting - zero stock templates.</li>
+        <li><strong>Transparent Workflow:</strong> Clear storyboarding, regular progress updates, and iterative feedback at every core milestone.</li>
+        <li><strong>Reliable Execution:</strong> Dedicated project management, full-time availability, and seamless end-to-end communication.</li>
+      </ul>
+
+      <h3 class="about-h">What I Deliver:</h3>
+      <ul class="about-list">
+        <li>High-End 3D Product Animation (4K / Vertical / Widescreen)</li>
+        <li>Creative Direction &amp; Storyboarding</li>
+        <li>Custom Shader &amp; Material Development</li>
+        <li>Cinematic Lighting &amp; Dynamic Camera Motion</li>
+        <li>Production-Ready Assets for Ads, Web &amp; Social Media</li>
+      </ul>
+
+      <p class="about-note">No 3D model yet? No problem — I can construct high-detail 3D models directly from your photos, or rough sketches.</p>
+      <p class="about-cta">Ready to bring your product to life? Send me a message and let’s discuss the best creative strategy for your project.</p>
     </div>
   </div>
 </section>
